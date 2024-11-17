@@ -1,6 +1,7 @@
 package tech.silva.linkup.backend.service;
 
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tech.silva.linkup.backend.entity.UserEntity;
@@ -12,9 +13,11 @@ import tech.silva.linkup.backend.web.dto.UserCreateDto;
 public class UserService {
 
     private final IUserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(IUserRepository userRepository) {
+    public UserService(IUserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -35,7 +38,7 @@ public class UserService {
         user.setBirthDate(dto.birthDate());
         user.setPhone(dto.phone());
         user.setUsername(dto.username());
-        user.setPassword(dto.password());
+        user.setPassword(passwordEncoder.encode(dto.password()));
 
         return userRepository.save(user);
     }
