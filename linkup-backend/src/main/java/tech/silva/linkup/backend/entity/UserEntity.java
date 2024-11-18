@@ -22,7 +22,8 @@ public class UserEntity {
 
     private String password;
 
-    private Role role = Role.CLIENT;
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.ROLE_CLIENT;
 
     public UserEntity(Long id, String user, String birthDate, String phone, String username, String password, Role role) {
         this.id = id;

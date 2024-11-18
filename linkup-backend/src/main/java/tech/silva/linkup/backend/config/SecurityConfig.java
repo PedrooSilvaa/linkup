@@ -27,29 +27,18 @@ public class SecurityConfig {
 
         return http
                 .csrf(csrf -> csrf.disable())
-                // Desabilita o formulário de login padrão do Spring Security
                 .formLogin(form -> form.disable())
-                // Desabilita a autenticação básica HTTP
                 .httpBasic(basic -> basic.disable())
-                // Configuração de autorização para diferentes tipos de requisição
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
+                .authorizeRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/auth").permitAll()
-                        .requestMatchers(
-                                antMatcher("/docs-wallet.html"),
-                                antMatcher("/docs-wallet/**"),
-                                antMatcher("/swagger-ui.html"),
-                                antMatcher("/swagger-ui/**"),
-                                antMatcher("/webjars/**")
-                        ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(
                         session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .addFilterBefore(
-                        jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class
-                )
+                        jwtAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 

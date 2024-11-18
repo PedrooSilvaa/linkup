@@ -6,8 +6,7 @@ public record UserProfileResponseDto(Long id,
                                      String user,
                                      String birthDate,
                                      String phone,
-                                     String username,
-                                     String password) {
+                                     String username) {
 
     public static UserProfileResponseDto toResponse(UserEntity user) {
         return new UserProfileResponseDto(
@@ -15,8 +14,7 @@ public record UserProfileResponseDto(Long id,
                 user.getUser(),
                 user.getBirthDate(),
                 user.getPhone(),
-                user.getUsername(),
-                user.getPassword()
+                user.getUsername()
         );
     }
 }
