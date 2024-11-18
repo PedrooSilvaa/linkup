@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.silva.linkup.backend.entity.UserEntity;
-import tech.silva.linkup.backend.exception.InvalidCredencialException;
+import tech.silva.linkup.backend.exception.*;
 import tech.silva.linkup.backend.jwt.JwtToken;
 import tech.silva.linkup.backend.jwt.JwtUserDetailsService;
 import tech.silva.linkup.backend.repository.IUserRepository;
@@ -38,7 +38,10 @@ public class AuthenticationController {
             username = dto.user();
             if (!dto.user().contains("@")){
                 UserEntity userEntity = new UserEntity();
-                userEntity = userRepository.findByUser(dto.user());
+                userEntity = userRepository.findByUser(dto.user())
+                        .orElseThrow(
+                                () -> new ObjectNotFoundException(String.format("User not found. Please check the user User and try again."))
+                        );;
                 username = userEntity.getUsername();
             }
 
