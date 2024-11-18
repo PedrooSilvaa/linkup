@@ -9,6 +9,7 @@ import tech.silva.linkup.backend.repository.IPostRepository;
 import tech.silva.linkup.backend.repository.IUserRepository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PostService {
@@ -32,5 +33,10 @@ public class PostService {
         post.setDescription(description);
         post.setDateTime(LocalDateTime.now());
         return postRepository.save(post);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Post> listPost(){
+        return postRepository.findAll();
     }
 }
