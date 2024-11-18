@@ -35,7 +35,18 @@ public class PostController {
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<List<PostResponseDto>> listPost(){
         List<Post> posts = postService.listPost();
+        if (posts.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok().body(PostResponseDto.toList(posts));
     }
 
+    @GetMapping("/current")
+    public ResponseEntity<List<PostResponseDto>> listMyPosts(@AuthenticationPrincipal JwtUserDetails userDetails){
+        List<Post> posts = postService.listMyPost(userDetails.getId());
+        if (posts.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(PostResponseDto.toList(posts));
+    }
 }

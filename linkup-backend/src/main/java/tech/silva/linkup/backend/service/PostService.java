@@ -39,4 +39,12 @@ public class PostService {
     public List<Post> listPost(){
         return postRepository.findAll();
     }
+
+    public List<Post> listMyPost(Long id) {
+        UserEntity user = userRepository.findById(id)
+            .orElseThrow(
+                    () -> new ObjectNotFoundException(String.format("User not found. Please check the user ID and try again."))
+            );
+        return postRepository.findAllByUser(user);
+    }
 }
