@@ -5,14 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import tech.silva.linkup.backend.entity.Like;
 import tech.silva.linkup.backend.jwt.JwtUserDetails;
 import tech.silva.linkup.backend.service.LikeService;
 import tech.silva.linkup.backend.web.dto.LikeResponseDto;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/likes")
@@ -30,5 +29,13 @@ public class LikeController {
         Like like = likeService.createLike(userDetails.getId(), idPost);
         return ResponseEntity.status(HttpStatus.CREATED).body(LikeResponseDto.toResponse(like));
     }
+
+    @GetMapping("/{idPost}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<List<LikeResponseDto>> findAllByPost(@PathVariable Long idPost){
+        List<Like> like = likeService.findAllByPost(idPost);
+        return ResponseEntity.ok().body(LikeResponseDto.toList(like));
+    }
+
 
 }

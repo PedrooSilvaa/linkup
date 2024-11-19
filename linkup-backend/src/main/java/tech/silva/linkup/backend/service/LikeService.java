@@ -11,6 +11,8 @@ import tech.silva.linkup.backend.repository.ILikeRepository;
 import tech.silva.linkup.backend.repository.IPostRepository;
 import tech.silva.linkup.backend.repository.IUserRepository;
 
+import java.util.List;
+
 @Service
 public class LikeService {
 
@@ -54,6 +56,14 @@ public class LikeService {
 
     public Long countLike(Post post){
         return likeRepository.countLikeByPost(post);
+    }
+
+    public List<Like> findAllByPost(Long idPost){
+        Post post = postRepository.findById(idPost)
+                .orElseThrow(
+                        () -> new ObjectNotFoundException(String.format("Post not found. Please check the user ID and try again."))
+                );
+        return likeRepository.findAllByPost(post);
     }
 
 
