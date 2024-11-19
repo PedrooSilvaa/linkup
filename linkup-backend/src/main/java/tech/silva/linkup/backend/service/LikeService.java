@@ -35,7 +35,7 @@ public class LikeService {
                         () -> new ObjectNotFoundException(String.format("Post not found. Please check the user ID and try again."))
                 );
 
-        if (likeRepository.existsByUserAndPost(user, post)){
+        if(liked(user, post)){
             throw new LikeAlreadyMadeException("Post already liked");
         }
 
@@ -43,6 +43,17 @@ public class LikeService {
         like.setUser(user);
         like.setPost(post);
         return likeRepository.save(like);
+    }
+
+    public boolean liked(UserEntity user, Post post) {
+        if (likeRepository.existsByUserAndPost(user, post)){
+            return true;
+        }
+        return false;
+    }
+
+    public Long countLike(Post post){
+        return likeRepository.countLikeByPost(post);
     }
 
 

@@ -9,4 +9,6 @@ import tech.silva.linkup.backend.entity.UserEntity;
 public interface ILikeRepository extends JpaRepository<Like, Long> {
 
     boolean existsByUserAndPost(UserEntity user, Post post);
+
+    Long countLikeByPost(Post post);
 }

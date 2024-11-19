@@ -33,12 +33,12 @@ public class PostController {
 
     @GetMapping
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<List<PostResponseDto>> listPost(){
-        List<Post> posts = postService.listPost();
+    public ResponseEntity<List<PostResponseDto>> listPost(@AuthenticationPrincipal JwtUserDetails userDetails){
+        List<PostResponseDto> posts = postService.listPost(userDetails.getId());
         if (posts.isEmpty()){
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok().body(PostResponseDto.toList(posts));
+        return ResponseEntity.ok().body(posts);
     }
 
     @GetMapping("/current")

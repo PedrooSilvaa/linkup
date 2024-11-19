@@ -5,12 +5,19 @@ import tech.silva.linkup.backend.entity.Post;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record PostResponseDto(String user,
-                              String description) {
+public record PostResponseDto(Long id,
+                              String user,
+                              String description,
+                              boolean status,
+                              Long countLike) {
+
     public static PostResponseDto toResponse(Post post) {
         return new PostResponseDto(
+                post.getId(),
                 post.getUser().getUser(),
-                post.getDescription()
+                post.getDescription(),
+                false,
+                0L
         );
     }
 

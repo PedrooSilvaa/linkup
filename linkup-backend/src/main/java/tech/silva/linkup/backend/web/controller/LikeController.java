@@ -27,7 +27,7 @@ public class LikeController {
     @PostMapping("/{idPost}")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<LikeResponseDto> saveLike(@PathVariable Long idPost, @AuthenticationPrincipal JwtUserDetails userDetails){
-        Like like = likeService.createLike(idPost, userDetails.getId());
+        Like like = likeService.createLike(userDetails.getId(), idPost);
         return ResponseEntity.status(HttpStatus.CREATED).body(LikeResponseDto.toResponse(like));
     }
 
