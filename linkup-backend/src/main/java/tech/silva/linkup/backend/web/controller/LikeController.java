@@ -30,6 +30,13 @@ public class LikeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(LikeResponseDto.toResponse(like));
     }
 
+    @DeleteMapping("/{idPost}")
+    @PreAuthorize("hasRole('CLIENT')")
+    public ResponseEntity<Void> deleteLike(@PathVariable Long idPost, @AuthenticationPrincipal JwtUserDetails userDetails){
+        likeService.deleteLike(userDetails.getId(), idPost);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{idPost}")
     @PreAuthorize("hasRole('CLIENT')")
     public ResponseEntity<List<LikeResponseDto>> findAllByPost(@PathVariable Long idPost){

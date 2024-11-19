@@ -66,5 +66,16 @@ public class LikeService {
         return likeRepository.findAllByPost(post);
     }
 
-
+    public void deleteLike(Long id, Long idPost) {
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(
+                        () -> new ObjectNotFoundException(String.format("User not found. Please check the user ID and try again."))
+                );
+        Post post = postRepository.findById(idPost)
+                .orElseThrow(
+                        () -> new ObjectNotFoundException(String.format("Post not found. Please check the user ID and try again."))
+                );
+        Like like = likeRepository.findByUserAndPost(user, post);
+        likeRepository.deleteById(like.getId());
+    }
 }
